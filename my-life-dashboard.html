@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Life Dashboard 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --lavender: #c9b8e8;
+  --lavender-light: #ede6f7;
+  --lavender-pale: #f7f3fd;
+  --peach: #f5c5a3;
+  --peach-light: #fde8d8;
+  --peach-pale: #fff5ef;
+  --mint: #a8d8c8;
+  --mint-light: #d4f0e8;
+  --mint-pale: #f0faf6;
+  --rose: #f0a0b0;
+  --rose-light: #fde0e8;
+  --rose-pale: #fff0f4;
+  --sky: #a8cce8;
+  --sky-light: #d8ecf8;
+  --sky-pale: #f0f8ff;
+  --yellow: #f5dfa0;
+  --yellow-light: #fdf4d0;
+  --text: #4a4060;
+  --text-light: #7a6e90;
+  --text-muted: #a89cb8;
+  --white: #ffffff;
+  --bg: #fdf8ff;
+  --card-shadow: 0 4px 20px rgba(180,160,210,0.15);
+  --card-shadow-hover: 0 8px 32px rgba(180,160,210,0.28);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Quicksand', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(201,184,232,0.18) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(168,216,200,0.18) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(245,197,163,0.1) 0%, transparent 60%);
+}
+
+/* ── TOP NAV ── */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1.5px solid rgba(201,184,232,0.3);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 64px;
+  overflow-x: auto;
+}
+
+.topbar-brand {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.25rem;
+  color: var(--lavender);
+  white-space: nowrap;
+  margin-right: 16px;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-light);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+.nav-btn:hover, .nav-btn.active {
+  background: var(--lavender-light);
+  color: var(--text);
+}
+.nav-btn.active { color: #7b5ea7; }
+
+/* ── MAIN LAYOUT ── */
+.main { max-width: 1200px; margin: 0 auto; padding: 28px 20px 60px; }
+
+/* ── SECTION ── */
+.section { display: none; animation: fadeIn 0.35s ease; }
+.section.active { display: block; }
+
+@keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: var(--text);
+  margin-bottom: 6px;
+  display: flex; align-items: center; gap: 12px;
+}
+
+.section-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+  font-weight: 500;
+}
+
+/* ── CARDS ── */
+.card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.2s, transform 0.2s;
+  border: 1.5px solid transparent;
+}
+.card:hover { box-shadow: var(--card-shadow-hover); transform: translateY(-2px); }
+
+.card-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+.grid-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 18px; }
+
+/* ── CHECKLIST ── */
+.checklist { display: flex; flex-direction: column; gap: 10px; }
+.check-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #fafafa;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 0.92rem; font-weight: 600;
+  user-select: none;
+}
+.check-item:hover { background: #f3f0f8; }
+.check-item.checked { background: var(--mint-light); color: #3a7a60; }
+.check-item.checked .checkmark { background: var(--mint); }
+.checkmark {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--lavender);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  transition: all 0.2s;
+}
+.check-item.checked .checkmark::after { content: '✓'; color: white; font-weight: 700; }
+.check-progress {
+  margin-top: 14px;
+  height: 8px;
+  background: var(--lavender-light);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.check-progress-fill {
+  height: 100%; border-radius: 100px;
+  background: linear-gradient(90deg, var(--lavender), var(--mint));
+  transition: width 0.4s ease;
+}
+
+/* ── MOOD / JOURNAL ── */
+.mood-grid {
+  display: grid; grid-template-columns: repeat(5,1fr); gap: 10px;
+  margin-bottom: 16px;
+}
+.mood-btn {
+  background: #fafafa; border: 2px solid transparent;
+  border-radius: 14px; padding: 12px 6px;
+  text-align: center; cursor: pointer;
+  transition: all 0.2s; font-size: 1.6rem;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.mood-btn span { font-size: 0.7rem; font-weight: 700; color: var(--text-muted); }
+.mood-btn:hover { transform: scale(1.08); }
+.mood-btn.selected { border-color: var(--lavender); background: var(--lavender-light); }
+
+textarea.journal-input {
+  width: 100%; padding: 14px 16px;
+  border: 1.5px solid var(--lavender-light);
+  border-radius: 14px; font-family: 'Quicksand', sans-serif;
+  font-size: 0.9rem; color: var(--text); resize: vertical;
+  min-height: 90px; outline: none;
+  transition: border-color 0.2s; background: var(--lavender-pale);
+}
+textarea.journal-input:focus { border-color: var(--lavender); }
+
+.input-label { font-size: 0.78rem; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; display: block; }
+
+/* ── BUTTONS ── */
+.btn {
+  padding: 10px 22px; border-radius: 30px; border: none;
+  font-family: 'Quicksand', sans-serif; font-weight: 700;
+  font-size: 0.85rem; cursor: pointer; transition: all 0.2s;
+}
+.btn-lavender { background: var(--lavender); color: white; }
+.btn-lavender:hover { background: #b5a0d8; transform: translateY(-1px); }
+.btn-mint { background: var(--mint); color: #2a6050; }
+.btn-mint:hover { background: #8fcfbc; }
+.btn-peach { background: var(--peach); color: #7a4020; }
+.btn-peach:hover { background: #e8a888; }
+.btn-rose { background: var(--rose); color: #7a2040; }
+.btn-sm { padding: 7px 16px; font-size: 0.78rem; }
+
+/* ── TAGS ── */
+.tag {
+  display: inline-block; padding: 4px 12px;
+  border-radius: 20px; font-size: 0.75rem; font-weight: 700;
+}
+.tag-lavender { background: var(--lavender-light); color: #7b5ea7; }
+.tag-mint { background: var(--mint-light); color: #3a7a60; }
+.tag-peach { background: var(--peach-light); color: #8a4a20; }
+.tag-rose { background: var(--rose-light); color: #8a2040; }
+.tag-sky { background: var(--sky-light); color: #2060a0; }
+
+/* ── MONEY ── */
+.money-total {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem; color: var(--text);
+  margin-bottom: 4px;
+}
+.money-bar-wrap { display: flex; flex-direction: column; gap: 10px; }
+.money-bar-row { display: flex; align-items: center; gap: 12px; font-size: 0.85rem; }
+.money-bar-label { width: 110px; font-weight: 600; flex-shrink: 0; }
+.money-bar-track { flex: 1; height: 10px; background: #f0edf8; border-radius: 100px; overflow: hidden; }
+.money-bar-fill { height: 100%; border-radius: 100px; transition: width 0.5s ease; }
+.money-bar-amt { width: 60px; text-align: right; font-weight: 700; color: var(--text-light); }
+
+input[type="text"], input[type="number"], input[type="date"], input[type="email"], select {
+  width: 100%; padding: 10px 14px;
+  border: 1.5px solid var(--lavender-light);
+  border-radius: 12px; font-family: 'Quicksand', sans-serif;
+  font-size: 0.88rem; color: var(--text); outline: none;
+  background: var(--lavender-pale); transition: border-color 0.2s;
+}
+input:focus, select:focus { border-color: var(--lavender); }
+
+.form-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.form-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 120px; }
+
+/* ── TRIP GALLERY ── */
+.trip-card {
+  background: var(--white); border-radius: 20px;
+  overflow: hidden; box-shadow: var(--card-shadow);
+  transition: all 0.2s;
+}
+.trip-card:hover { transform: translateY(-4px); box-shadow: var(--card-shadow-hover); }
+.trip-img-placeholder {
+  width: 100%; aspect-ratio: 4/3;
+  background: linear-gradient(135deg, var(--lavender-light), var(--mint-light));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3rem; position: relative; overflow: hidden;
+}
+.trip-img-placeholder img { width:100%; height:100%; object-fit:cover; position:absolute; inset:0; }
+.trip-card-body { padding: 18px; }
+.trip-card-title { font-weight: 700; font-size: 1rem; margin-bottom: 6px; }
+.trip-card-desc { font-size: 0.83rem; color: var(--text-light); line-height: 1.6; }
+
+/* ── CALENDAR ── */
+.cal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px;
+}
+.cal-month {
+  font-family: 'Playfair Display', serif; font-size: 1.4rem;
+}
+.cal-nav { background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text-light); padding: 4px 10px; border-radius: 8px; }
+.cal-nav:hover { background: var(--lavender-light); }
+.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
+.cal-day-name { text-align: center; font-size: 0.72rem; font-weight: 700; color: var(--text-muted); padding: 6px 0; }
+.cal-day {
+  text-align: center; padding: 8px 4px;
+  border-radius: 10px; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; position: relative; min-height: 36px;
+  display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 2px;
+}
+.cal-day:hover { background: var(--lavender-light); }
+.cal-day.today { background: var(--lavender); color: white; }
+.cal-day.has-event::after { content:''; width:5px; height:5px; background:var(--peach); border-radius:50%; display:block; }
+.cal-day.period { background: var(--rose-light); color: #c04060; }
+.cal-day.medicine { background: var(--mint-light); }
+.cal-day.empty { cursor: default; }
+
+.event-dot { width: 5px; height: 5px; border-radius: 50%; display: inline-block; margin: 0 1px; }
+
+/* ── DREAM TRIPS ── */
+.dream-card {
+  background: linear-gradient(135deg, var(--lavender-light), var(--sky-light));
+  border-radius: 20px; padding: 22px;
+  border: 1.5px solid rgba(201,184,232,0.3);
+  position: relative; overflow: hidden;
+}
+.dream-card::before {
+  content: '✈️'; position: absolute; right: 16px; top: 16px;
+  font-size: 2rem; opacity: 0.4;
+}
+.dream-destination {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem; margin-bottom: 6px;
+}
+.dream-detail { font-size: 0.82rem; color: var(--text-light); font-weight: 600; margin-bottom: 4px; }
+
+/* ── PERIOD / MEDICINE LEGEND ── */
+.legend-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 14px; }
+.legend-item { display: flex; align-items: center; gap: 7px; font-size: 0.78rem; font-weight: 600; }
+.legend-dot { width: 14px; height: 14px; border-radius: 4px; }
+
+/* ── SCROLL TO TOP / DIVIDER ── */
+.divider { height: 1.5px; background: linear-gradient(90deg, transparent, var(--lavender-light), transparent); margin: 28px 0; }
+
+/* ── SAVED ITEMS LISTS ── */
+.saved-list { display: flex; flex-direction: column; gap: 10px; max-height: 300px; overflow-y: auto; }
+.saved-item {
+  background: #fafafa; border-radius: 12px; padding: 12px 16px;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  font-size: 0.88rem; gap: 8px; border: 1.5px solid transparent;
+}
+.saved-item-left { flex: 1; }
+.saved-item-title { font-weight: 700; margin-bottom: 3px; }
+.saved-item-sub { font-size: 0.78rem; color: var(--text-muted); }
+.del-btn { background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 1rem; padding: 2px 6px; border-radius: 6px; }
+.del-btn:hover { background: var(--rose-light); color: #c04060; }
+
+/* ── PRODUCTIVE METER ── */
+.productive-row { display: flex; gap: 10px; margin-top: 10px; }
+.prod-btn {
+  flex: 1; padding: 12px; border-radius: 14px; border: 2px solid transparent;
+  font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 0.85rem;
+  cursor: pointer; transition: all 0.2s; background: #fafafa; color: var(--text-light);
+}
+.prod-btn.selected { border-color: var(--lavender); background: var(--lavender-light); color: var(--text); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 700px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .mood-grid { grid-template-columns: repeat(5,1fr); gap: 6px; }
+  .mood-btn { padding: 8px 4px; font-size: 1.3rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topbar">
+  <div class="topbar-brand">my life ✨</div>
+  <button class="nav-btn active" onclick="showSection('morning')">🌅 Morning</button>
+  <button class="nav-btn" onclick="showSection('journal')">💭 Journal</button>
+  <button class="nav-btn" onclick="showSection('trips')">📸 Trips</button>
+  <button class="nav-btn" onclick="showSection('money')">💸 Money</button>
+  <button class="nav-btn" onclick="showSection('dreams')">✈️ Dream Trips</button>
+  <button class="nav-btn" onclick="showSection('calendar')">📅 Calendar</button>
+</nav>
+
+<div class="main">
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 1. MORNING ROUTINE -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section active" id="section-morning">
+  <div class="section-title">🌅 Morning Routine</div>
+  <div class="section-subtitle">Track your daily habits & self-care rituals</div>
+
+  <div class="grid-2" style="margin-bottom:18px">
+    <!-- Morning Routine -->
+    <div class="card" style="border-color: var(--lavender-light)">
+      <div class="card-title" style="color:#7b5ea7">🌸 Morning Habits</div>
+      <div class="checklist" id="morning-list"></div>
+      <div class="check-progress" style="margin-top:16px">
+        <div class="check-progress-fill" id="morning-progress" style="width:0%"></div>
+      </div>
+      <div style="margin-top:8px; font-size:0.8rem; color:var(--text-muted); font-weight:600" id="morning-count">0 / 0 completed</div>
+    </div>
+
+    <!-- Evening / Self-care -->
+    <div class="card" style="border-color: var(--peach-light)">
+      <div class="card-title" style="color:#c06040">🌙 Evening & Self-Care</div>
+      <div class="checklist" id="evening-list"></div>
+      <div class="check-progress" style="margin-top:16px">
+        <div class="check-progress-fill" id="evening-progress" style="width:0%; background: linear-gradient(90deg, var(--peach), var(--rose));"></div>
+      </div>
+      <div style="margin-top:8px; font-size:0.8rem; color:var(--text-muted); font-weight:600" id="evening-count">0 / 0 completed</div>
+    </div>
+  </div>
+
+  <!-- Other Tasks -->
+  <div class="card" style="border-color: var(--mint-light)">
+    <div class="card-title" style="color:#3a7a60">✅ Other Tasks Today</div>
+    <div class="form-row" style="margin-bottom:12px">
+      <div class="form-group">
+        <input type="text" id="task-input" placeholder="Add a task..." onkeydown="if(event.key==='Enter') addTask()">
+      </div>
+      <button class="btn btn-mint btn-sm" onclick="addTask()">+ Add</button>
+    </div>
+    <div class="saved-list" id="task-list"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 2. JOURNAL -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="section-journal">
+  <div class="section-title">💭 Daily Journal</div>
+  <div class="section-subtitle">Reflect on your day — feelings, wins, worries & more</div>
+
+  <div class="grid-2" style="margin-bottom:18px">
+    <!-- Mood -->
+    <div class="card" style="border-color:var(--lavender-light)">
+      <div class="card-title" style="color:#7b5ea7">😊 How are you feeling?</div>
+      <div class="mood-grid">
+        <div class="mood-btn" data-mood="happy" onclick="selectMood(this)">😄<span>Happy</span></div>
+        <div class="mood-btn" data-mood="sad" onclick="selectMood(this)">😢<span>Sad</span></div>
+        <div class="mood-btn" data-mood="emotional" onclick="selectMood(this)">🥹<span>Emotional</span></div>
+        <div class="mood-btn" data-mood="calm" onclick="selectMood(this)">😌<span>Calm</span></div>
+        <div class="mood-btn" data-mood="stressed" onclick="selectMood(this)">😰<span>Stressed</span></div>
+      </div>
+      <label class="input-label">What made you feel this way?</label>
+      <textarea class="journal-input" id="mood-note" placeholder="Tell me about it..." rows="3"></textarea>
+    </div>
+
+    <!-- Hobby -->
+    <div class="card" style="border-color:var(--mint-light)">
+      <div class="card-title" style="color:#3a7a60">🎨 My Hobby Time</div>
+      <label class="input-label">What hobby did I spend time on?</label>
+      <input type="text" id="hobby-input" placeholder="e.g. painting, reading, dancing..." style="margin-bottom:10px">
+      <label class="input-label">How long? (mins)</label>
+      <input type="number" id="hobby-time" placeholder="30" style="margin-bottom:10px">
+      <label class="input-label">Notes</label>
+      <textarea class="journal-input" id="hobby-note" placeholder="How did it feel?" rows="2" style="background:var(--mint-pale)"></textarea>
+    </div>
+  </div>
+
+  <div class="grid-3" style="margin-bottom:18px">
+    <!-- Good thing -->
+    <div class="card" style="border-color:var(--yellow-light)">
+      <div class="card-title" style="color:#a07820">⭐ Good Thing I Did</div>
+      <textarea class="journal-input" id="good-thing" placeholder="One good thing I did today..." rows="4" style="background:var(--yellow-light)"></textarea>
+    </div>
+
+    <!-- What made me happy -->
+    <div class="card" style="border-color:var(--peach-light)">
+      <div class="card-title" style="color:#c06040">🧡 Something Extra</div>
+      <label class="input-label">Something that made me feel...</label>
+      <select id="extra-emotion" style="margin-bottom:10px; background:var(--peach-pale)">
+        <option>😊 Happy</option>
+        <option>😢 Sad</option>
+        <option>🥹 Emotional</option>
+        <option>✨ Inspired</option>
+        <option>😤 Frustrated</option>
+      </select>
+      <textarea class="journal-input" id="extra-note" placeholder="What happened?" rows="3" style="background:var(--peach-pale)"></textarea>
+    </div>
+
+    <!-- Worries -->
+    <div class="card" style="border-color:var(--rose-light)">
+      <div class="card-title" style="color:#c04060">💭 What I'm Worried About</div>
+      <textarea class="journal-input" id="worry-note" placeholder="Let it out here — this is safe space..." rows="4" style="background:var(--rose-pale)"></textarea>
+    </div>
+  </div>
+
+  <!-- Was today productive -->
+  <div class="card" style="border-color:var(--sky-light); margin-bottom:18px">
+    <div class="card-title" style="color:#2060a0">⚡ Was My Day Productive?</div>
+    <div class="productive-row">
+      <button class="prod-btn" onclick="selectProd(this,'very')">🚀 Very!</button>
+      <button class="prod-btn" onclick="selectProd(this,'somewhat')">👍 Somewhat</button>
+      <button class="prod-btn" onclick="selectProd(this,'not')">😴 Not Really</button>
+      <button class="prod-btn" onclick="selectProd(this,'rest')">🌸 Rest Day</button>
+    </div>
+    <label class="input-label" style="margin-top:14px">What did I accomplish?</label>
+    <textarea class="journal-input" id="productive-note" placeholder="Big or small wins count!" rows="2" style="background:var(--sky-pale)"></textarea>
+  </div>
+
+  <div style="text-align:center">
+    <button class="btn btn-lavender" onclick="saveJournal()">💾 Save Today's Journal Entry</button>
+  </div>
+
+  <div class="divider"></div>
+  <div class="card-title" style="color:#7b5ea7; padding: 0 0 14px">📖 Past Entries</div>
+  <div class="saved-list" id="journal-entries"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 3. TRIPS -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="section-trips">
+  <div class="section-title">📸 My Trip Memories</div>
+  <div class="section-subtitle">Upload photos and capture how every journey made you feel</div>
+
+  <div class="card" style="margin-bottom:20px; border-color:var(--lavender-light)">
+    <div class="card-title" style="color:#7b5ea7">➕ Add a Trip Memory</div>
+    <div class="grid-2" style="margin-bottom:12px">
+      <div class="form-group">
+        <label class="input-label">Trip Name / Destination</label>
+        <input type="text" id="trip-name" placeholder="e.g. Paris, Summer 2024">
+      </div>
+      <div class="form-group">
+        <label class="input-label">Date</label>
+        <input type="date" id="trip-date">
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:12px">
+      <label class="input-label">Your Feelings & Description</label>
+      <textarea class="journal-input" id="trip-desc" placeholder="How did this place make you feel? What moments will you never forget?" rows="3"></textarea>
+    </div>
+    <div class="form-group" style="margin-bottom:14px">
+      <label class="input-label">Photo (optional)</label>
+      <input type="file" id="trip-photo" accept="image/*" style="background:white; font-size:0.82rem; padding:8px">
+    </div>
+    <button class="btn btn-lavender" onclick="addTrip()">📸 Save Memory</button>
+  </div>
+
+  <div class="grid-auto" id="trip-gallery">
+    <!-- Trip cards rendered here -->
+  </div>
+  <div id="trip-empty" style="text-align:center; padding:40px; color:var(--text-muted); font-size:0.95rem">
+    🌍 No trip memories yet — add your first one above!
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 4. MONEY -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="section-money">
+  <div class="section-title">💸 My Money System</div>
+  <div class="section-subtitle">Track every penny — know where your money goes</div>
+
+  <div class="grid-2" style="margin-bottom:18px">
+    <!-- Summary -->
+    <div class="card" style="border-color:var(--mint-light)">
+      <div class="card-title" style="color:#3a7a60">📊 Monthly Summary</div>
+      <div class="money-total" id="money-total">£0.00</div>
+      <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:16px; font-weight:600">Total spent this month</div>
+      <div class="money-bar-wrap" id="money-bars"></div>
+    </div>
+
+    <!-- Add expense -->
+    <div class="card" style="border-color:var(--peach-light)">
+      <div class="card-title" style="color:#c06040">➕ Add Expense</div>
+      <div class="form-group" style="margin-bottom:10px">
+        <label class="input-label">Category</label>
+        <select id="expense-cat">
+          <option>🛒 Grocery</option>
+          <option>☕ Coffee</option>
+          <option>🍽️ Eating Out</option>
+          <option>👗 Clothes & Shopping</option>
+          <option>💆 Self-Care</option>
+          <option>🚗 Transport</option>
+          <option>🎬 Entertainment</option>
+          <option>💊 Health / Medicine</option>
+          <option>🏠 Home</option>
+          <option>📦 Other</option>
+        </select>
+      </div>
+      <div class="form-row" style="margin-bottom:10px">
+        <div class="form-group">
+          <label class="input-label">Amount (£)</label>
+          <input type="number" id="expense-amt" placeholder="0.00" step="0.01">
+        </div>
+        <div class="form-group">
+          <label class="input-label">Date</label>
+          <input type="date" id="expense-date">
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label class="input-label">Note (optional)</label>
+        <input type="text" id="expense-note" placeholder="e.g. Tesco weekly shop">
+      </div>
+      <button class="btn btn-peach" onclick="addExpense()">+ Add Expense</button>
+    </div>
+  </div>
+
+  <!-- Expense log -->
+  <div class="card" style="border-color:var(--sky-light)">
+    <div class="card-title" style="color:#2060a0">📋 Expense Log</div>
+    <div class="saved-list" id="expense-list">
+      <div style="text-align:center; padding:24px; color:var(--text-muted)">No expenses yet 💸</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 5. DREAM TRIPS -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="section-dreams">
+  <div class="section-title">✈️ Dream Trip Ideas</div>
+  <div class="section-subtitle">Your bucket list of places you want to explore 🌍</div>
+
+  <div class="card" style="margin-bottom:20px; border-color:var(--lavender-light)">
+    <div class="card-title" style="color:#7b5ea7">💫 Add a Dream Destination</div>
+    <div class="grid-2" style="margin-bottom:12px">
+      <div class="form-group">
+        <label class="input-label">Destination</label>
+        <input type="text" id="dream-dest" placeholder="e.g. Kyoto, Japan 🇯🇵">
+      </div>
+      <div class="form-group">
+        <label class="input-label">Dream Timeline</label>
+        <input type="text" id="dream-when" placeholder="e.g. Spring 2026">
+      </div>
+    </div>
+    <div class="grid-2" style="margin-bottom:12px">
+      <div class="form-group">
+        <label class="input-label">Estimated Budget</label>
+        <input type="text" id="dream-budget" placeholder="e.g. £2,000">
+      </div>
+      <div class="form-group">
+        <label class="input-label">Vibe / Theme</label>
+        <select id="dream-vibe">
+          <option>🏖️ Beach & Relaxation</option>
+          <option>🏔️ Adventure & Hiking</option>
+          <option>🏛️ Culture & History</option>
+          <option>🍜 Food & Experiences</option>
+          <option>🌿 Nature & Wildlife</option>
+          <option>🌃 City & Nightlife</option>
+          <option>💆 Wellness Retreat</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:14px">
+      <label class="input-label">Why I want to go there</label>
+      <textarea class="journal-input" id="dream-why" placeholder="What draws you to this place? What do you want to experience?" rows="2"></textarea>
+    </div>
+    <button class="btn btn-lavender" onclick="addDream()">✨ Add to Dream List</button>
+  </div>
+
+  <div class="grid-auto" id="dream-list"></div>
+  <div id="dream-empty" style="text-align:center;padding:40px;color:var(--text-muted)">✈️ No dream trips yet — add your first destination!</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 6. CALENDAR -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="section-calendar">
+  <div class="section-title">📅 My Calendar</div>
+  <div class="section-subtitle">Track meetings, period cycle, medicines & reminders</div>
+
+  <div class="grid-2">
+    <!-- Calendar -->
+    <div class="card" style="border-color:var(--lavender-light)">
+      <div class="cal-header">
+        <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
+        <div class="cal-month" id="cal-month-label"></div>
+        <button class="cal-nav" onclick="changeMonth(1)">›</button>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+      <div class="legend-row">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--lavender)"></div> Today</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--peach)"></div> Event</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f0a0b0"></div> Period</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--mint)"></div> Medicine</div>
+      </div>
+    </div>
+
+    <!-- Add events -->
+    <div style="display:flex; flex-direction:column; gap:14px">
+      <!-- Add reminder / meeting -->
+      <div class="card" style="border-color:var(--peach-light)">
+        <div class="card-title" style="color:#c06040">📌 Add Reminder / Meeting</div>
+        <div class="form-group" style="margin-bottom:10px">
+          <label class="input-label">Date</label>
+          <input type="date" id="event-date">
+        </div>
+        <div class="form-group" style="margin-bottom:10px">
+          <label class="input-label">Title</label>
+          <input type="text" id="event-title" placeholder="e.g. Doctor's appointment">
+        </div>
+        <div class="form-group" style="margin-bottom:12px">
+          <label class="input-label">Type</label>
+          <select id="event-type">
+            <option value="event">📅 Meeting / Event</option>
+            <option value="period">🌸 Period Start</option>
+            <option value="medicine">💊 Medicine Reminder</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:12px">
+          <label class="input-label">Notes</label>
+          <input type="text" id="event-note" placeholder="Any extra details...">
+        </div>
+        <button class="btn btn-peach" onclick="addEvent()">+ Add to Calendar</button>
+      </div>
+
+      <!-- Upcoming events -->
+      <div class="card" style="border-color:var(--mint-light)">
+        <div class="card-title" style="color:#3a7a60">🔔 Upcoming Reminders</div>
+        <div class="saved-list" id="event-list">
+          <div style="text-align:center;padding:16px;color:var(--text-muted);font-size:0.85rem">No events yet</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<script>
+// ── DATA STORE ──
+const store = {
+  morning: JSON.parse(localStorage.getItem('morning') || '{}'),
+  evening: JSON.parse(localStorage.getItem('evening') || '{}'),
+  tasks: JSON.parse(localStorage.getItem('tasks') || '[]'),
+  journals: JSON.parse(localStorage.getItem('journals') || '[]'),
+  trips: JSON.parse(localStorage.getItem('trips') || '[]'),
+  expenses: JSON.parse(localStorage.getItem('expenses') || '[]'),
+  dreams: JSON.parse(localStorage.getItem('dreams') || '[]'),
+  events: JSON.parse(localStorage.getItem('events') || '[]'),
+};
+function save(key) { localStorage.setItem(key, JSON.stringify(store[key])); }
+
+// ── NAV ──
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  event.target.classList.add('active');
+  if (id === 'calendar') renderCalendar();
+  if (id === 'money') renderMoney();
+  if (id === 'trips') renderTrips();
+  if (id === 'dreams') renderDreams();
+}
+
+// ── MORNING CHECKLISTS ──
+const morningItems = ['⏰ Wake up on time','🚿 Shower','🙏 Be spiritual','💧 Drink water','🧘 Meditate','🥞 Eat breakfast'];
+const eveningItems = ['🌙 Sleep on time','🌿 Give time to myself','✨ Skin care','👕 Laundry','🛒 Grocery shop','🍽️ Have food on time'];
+
+function buildChecklist(items, store_key, listId, progressId, countId) {
+  const list = document.getElementById(listId);
+  const prog = document.getElementById(progressId);
+  const cnt = document.getElementById(countId);
+  list.innerHTML = '';
+  let checked = 0;
+  items.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'check-item' + (store[store_key][i] ? ' checked' : '');
+    div.innerHTML = `<div class="checkmark"></div><span>${item}</span>`;
+    div.onclick = () => {
+      store[store_key][i] = !store[store_key][i];
+      save(store_key);
+      buildChecklist(items, store_key, listId, progressId, countId);
+    };
+    list.appendChild(div);
+    if (store[store_key][i]) checked++;
+  });
+  const pct = Math.round((checked / items.length) * 100);
+  prog.style.width = pct + '%';
+  cnt.textContent = `${checked} / ${items.length} completed`;
+}
+
+buildChecklist(morningItems, 'morning', 'morning-list', 'morning-progress', 'morning-count');
+buildChecklist(eveningItems, 'evening', 'evening-list', 'evening-progress', 'evening-count');
+
+// ── TASKS ──
+function addTask() {
+  const val = document.getElementById('task-input').value.trim();
+  if (!val) return;
+  store.tasks.unshift({ text: val, done: false, id: Date.now() });
+  save('tasks'); renderTasks();
+  document.getElementById('task-input').value = '';
+}
+function renderTasks() {
+  const list = document.getElementById('task-list');
+  if (!store.tasks.length) { list.innerHTML = '<div style="text-align:center;padding:16px;color:var(--text-muted)">No tasks — add one above!</div>'; return; }
+  list.innerHTML = store.tasks.map((t,i) => `
+    <div class="saved-item" style="${t.done?'opacity:0.5;text-decoration:line-through':''}">
+      <div class="saved-item-left" onclick="toggleTask(${i})" style="cursor:pointer">
+        <div class="saved-item-title">${t.done?'✅ ':'⬜ '}${t.text}</div>
+      </div>
+      <button class="del-btn" onclick="delTask(${i})">🗑</button>
+    </div>`).join('');
+}
+function toggleTask(i) { store.tasks[i].done = !store.tasks[i].done; save('tasks'); renderTasks(); }
+function delTask(i) { store.tasks.splice(i,1); save('tasks'); renderTasks(); }
+renderTasks();
+
+// ── JOURNAL ──
+let selectedMood = null, selectedProd = null;
+function selectMood(el) {
+  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedMood = el.dataset.mood;
+}
+function selectProd(el, val) {
+  document.querySelectorAll('.prod-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedProd = val;
+}
+function saveJournal() {
+  const entry = {
+    id: Date.now(),
+    date: new Date().toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}),
+    mood: selectedMood,
+    moodNote: document.getElementById('mood-note').value,
+    hobby: document.getElementById('hobby-input').value,
+    hobbyTime: document.getElementById('hobby-time').value,
+    hobbyNote: document.getElementById('hobby-note').value,
+    goodThing: document.getElementById('good-thing').value,
+    extraEmotion: document.getElementById('extra-emotion').value,
+    extraNote: document.getElementById('extra-note').value,
+    worry: document.getElementById('worry-note').value,
+    productive: selectedProd,
+    productiveNote: document.getElementById('productive-note').value,
+  };
+  store.journals.unshift(entry);
+  save('journals');
+  renderJournals();
+  alert('💾 Journal entry saved! 🌸');
+}
+function renderJournals() {
+  const list = document.getElementById('journal-entries');
+  if (!store.journals.length) { list.innerHTML = '<div style="text-align:center;padding:24px;color:var(--text-muted)">No entries yet ✨</div>'; return; }
+  const moodEmoji = { happy:'😄', sad:'😢', emotional:'🥹', calm:'😌', stressed:'😰' };
+  const prodLabel = { very:'🚀 Very productive', somewhat:'👍 Somewhat productive', not:'😴 Not really', rest:'🌸 Rest day' };
+  list.innerHTML = store.journals.map((j,i) => `
+    <div class="saved-item" style="flex-direction:column; align-items:stretch; background: var(--lavender-pale); border-color: var(--lavender-light)">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
+        <div class="saved-item-title">${moodEmoji[j.mood]||'📝'} ${j.date}</div>
+        <button class="del-btn" onclick="delJournal(${i})">🗑</button>
+      </div>
+      ${j.goodThing?`<div style="font-size:0.82rem;color:var(--text-light);margin-bottom:4px">⭐ <b>Good thing:</b> ${j.goodThing}</div>`:''}
+      ${j.worry?`<div style="font-size:0.82rem;color:var(--text-light);margin-bottom:4px">💭 <b>Worried about:</b> ${j.worry}</div>`:''}
+      ${j.productive?`<div style="font-size:0.82rem;color:var(--text-light)">${prodLabel[j.productive]||''}</div>`:''}
+    </div>`).join('');
+}
+function delJournal(i) { store.journals.splice(i,1); save('journals'); renderJournals(); }
+renderJournals();
+
+// ── TRIPS ──
+function addTrip() {
+  const name = document.getElementById('trip-name').value.trim();
+  const desc = document.getElementById('trip-desc').value.trim();
+  if (!name) { alert('Please enter a destination!'); return; }
+  const file = document.getElementById('trip-photo').files[0];
+  const trip = { id: Date.now(), name, date: document.getElementById('trip-date').value, desc };
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = e => { trip.photo = e.target.result; store.trips.unshift(trip); save('trips'); renderTrips(); };
+    reader.readAsDataURL(file);
+  } else {
+    store.trips.unshift(trip); save('trips'); renderTrips();
+  }
+  document.getElementById('trip-name').value = '';
+  document.getElementById('trip-desc').value = '';
+  document.getElementById('trip-date').value = '';
+  document.getElementById('trip-photo').value = '';
+}
+function renderTrips() {
+  const gallery = document.getElementById('trip-gallery');
+  const empty = document.getElementById('trip-empty');
+  if (!store.trips.length) { gallery.innerHTML = ''; empty.style.display='block'; return; }
+  empty.style.display = 'none';
+  gallery.innerHTML = store.trips.map((t,i) => `
+    <div class="trip-card">
+      <div class="trip-img-placeholder">
+        ${t.photo ? `<img src="${t.photo}" alt="${t.name}">` : '📸'}
+      </div>
+      <div class="trip-card-body">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div class="trip-card-title">📍 ${t.name}</div>
+          <button class="del-btn" onclick="delTrip(${i})">🗑</button>
+        </div>
+        ${t.date?`<div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:6px">${new Date(t.date).toLocaleDateString('en-GB',{month:'long',year:'numeric'})}</div>`:''}
+        <div class="trip-card-desc">${t.desc||''}</div>
+      </div>
+    </div>`).join('');
+}
+function delTrip(i) { store.trips.splice(i,1); save('trips'); renderTrips(); }
+
+// ── MONEY ──
+const catColors = {
+  '🛒 Grocery':'#a8d8c8','☕ Coffee':'#c9b8e8','🍽️ Eating Out':'#f5c5a3',
+  '👗 Clothes & Shopping':'#f0a0b0','💆 Self-Care':'#f5dfa0','🚗 Transport':'#a8cce8',
+  '🎬 Entertainment':'#d4b8e8','💊 Health / Medicine':'#a8d8a8','🏠 Home':'#e8d4b8','📦 Other':'#d8d8d8'
+};
+function addExpense() {
+  const amt = parseFloat(document.getElementById('expense-amt').value);
+  if (!amt || amt <= 0) { alert('Please enter a valid amount'); return; }
+  store.expenses.unshift({
+    id: Date.now(),
+    cat: document.getElementById('expense-cat').value,
+    amt,
+    date: document.getElementById('expense-date').value || new Date().toISOString().split('T')[0],
+    note: document.getElementById('expense-note').value
+  });
+  save('expenses'); renderMoney();
+  document.getElementById('expense-amt').value = '';
+  document.getElementById('expense-note').value = '';
+}
+function renderMoney() {
+  const total = store.expenses.reduce((s,e) => s+e.amt, 0);
+  document.getElementById('money-total').textContent = '£' + total.toFixed(2);
+  // By category
+  const cats = {};
+  store.expenses.forEach(e => { cats[e.cat] = (cats[e.cat]||0) + e.amt; });
+  const bars = document.getElementById('money-bars');
+  bars.innerHTML = Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([cat,amt]) => `
+    <div class="money-bar-row">
+      <div class="money-bar-label" style="font-size:0.78rem">${cat}</div>
+      <div class="money-bar-track">
+        <div class="money-bar-fill" style="width:${Math.min(100,(amt/total)*100)}%;background:${catColors[cat]||'#c9b8e8'}"></div>
+      </div>
+      <div class="money-bar-amt">£${amt.toFixed(0)}</div>
+    </div>`).join('');
+  // Log
+  const list = document.getElementById('expense-list');
+  if (!store.expenses.length) { list.innerHTML = '<div style="text-align:center;padding:24px;color:var(--text-muted)">No expenses yet 💸</div>'; return; }
+  list.innerHTML = store.expenses.map((e,i) => `
+    <div class="saved-item">
+      <div class="saved-item-left">
+        <div class="saved-item-title">${e.cat} <span style="color:var(--text-light);font-weight:400">— £${e.amt.toFixed(2)}</span></div>
+        <div class="saved-item-sub">${e.date}${e.note?' · '+e.note:''}</div>
+      </div>
+      <button class="del-btn" onclick="delExpense(${i})">🗑</button>
+    </div>`).join('');
+}
+function delExpense(i) { store.expenses.splice(i,1); save('expenses'); renderMoney(); }
+
+// ── DREAM TRIPS ──
+const vibeColors = {'🏖️ Beach & Relaxation':'var(--sky-light)','🏔️ Adventure & Hiking':'var(--mint-light)','🏛️ Culture & History':'var(--yellow-light)','🍜 Food & Experiences':'var(--peach-light)','🌿 Nature & Wildlife':'var(--mint-light)','🌃 City & Nightlife':'var(--lavender-light)','💆 Wellness Retreat':'var(--rose-light)'};
+function addDream() {
+  const dest = document.getElementById('dream-dest').value.trim();
+  if (!dest) { alert('Enter a destination!'); return; }
+  store.dreams.push({
+    id: Date.now(),
+    dest, when: document.getElementById('dream-when').value,
+    budget: document.getElementById('dream-budget').value,
+    vibe: document.getElementById('dream-vibe').value,
+    why: document.getElementById('dream-why').value
+  });
+  save('dreams'); renderDreams();
+  ['dream-dest','dream-when','dream-budget','dream-why'].forEach(id => document.getElementById(id).value='');
+}
+function renderDreams() {
+  const list = document.getElementById('dream-list');
+  const empty = document.getElementById('dream-empty');
+  if (!store.dreams.length) { list.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  list.innerHTML = store.dreams.map((d,i) => `
+    <div class="dream-card" style="background:linear-gradient(135deg,${vibeColors[d.vibe]||'var(--lavender-light)'},white)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+        <div class="dream-destination">📍 ${d.dest}</div>
+        <button class="del-btn" onclick="delDream(${i})">🗑</button>
+      </div>
+      ${d.vibe?`<div style="margin-bottom:8px"><span class="tag tag-lavender">${d.vibe}</span></div>`:''}
+      ${d.when?`<div class="dream-detail">🗓️ ${d.when}</div>`:''}
+      ${d.budget?`<div class="dream-detail">💰 Budget: ${d.budget}</div>`:''}
+      ${d.why?`<div style="margin-top:10px;font-size:0.83rem;color:var(--text-light);line-height:1.6">${d.why}</div>`:''}
+    </div>`).join('');
+}
+function delDream(i) { store.dreams.splice(i,1); save('dreams'); renderDreams(); }
+
+// ── CALENDAR ──
+let calDate = new Date();
+function changeMonth(dir) { calDate.setMonth(calDate.getMonth()+dir); renderCalendar(); }
+function renderCalendar() {
+  const now = new Date();
+  const year = calDate.getFullYear(), month = calDate.getMonth();
+  document.getElementById('cal-month-label').textContent =
+    calDate.toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+  const grid = document.getElementById('cal-grid');
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  let html = days.map(d=>`<div class="cal-day-name">${d}</div>`).join('');
+  const first = new Date(year,month,1).getDay();
+  const daysInMonth = new Date(year,month+1,0).getDate();
+  for(let i=0;i<first;i++) html+=`<div class="cal-day empty"></div>`;
+  for(let d=1;d<=daysInMonth;d++){
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday = now.getDate()===d && now.getMonth()===month && now.getFullYear()===year;
+    const evs = store.events.filter(e=>e.date===dateStr);
+    const isPeriod = evs.some(e=>e.type==='period');
+    const isMed = evs.some(e=>e.type==='medicine');
+    const hasEv = evs.some(e=>e.type==='event');
+    let cls = 'cal-day';
+    if(isToday) cls+=' today';
+    else if(isPeriod) cls+=' period';
+    else if(isMed) cls+=' medicine';
+    const dots = [hasEv?`<span class="event-dot" style="background:var(--peach)"></span>`:'',
+                  isPeriod?`<span class="event-dot" style="background:var(--rose)"></span>`:'',
+                  isMed?`<span class="event-dot" style="background:var(--mint)"></span>`:''].join('');
+    html+=`<div class="${cls}" title="${evs.map(e=>e.title).join(', ')}">${d}${dots?'<div style="display:flex;justify-content:center">'+dots+'</div>':''}</div>`;
+  }
+  grid.innerHTML = html;
+  renderEvents();
+}
+function addEvent() {
+  const date = document.getElementById('event-date').value;
+  const title = document.getElementById('event-title').value.trim();
+  if(!date||!title){ alert('Please fill in date and title'); return; }
+  store.events.push({ id:Date.now(), date, title, type: document.getElementById('event-type').value, note: document.getElementById('event-note').value });
+  store.events.sort((a,b)=>a.date.localeCompare(b.date));
+  save('events'); renderCalendar();
+  document.getElementById('event-date').value='';
+  document.getElementById('event-title').value='';
+  document.getElementById('event-note').value='';
+}
+function renderEvents() {
+  const list = document.getElementById('event-list');
+  const upcoming = store.events.filter(e=>e.date>=new Date().toISOString().split('T')[0]);
+  if(!upcoming.length){list.innerHTML='<div style="text-align:center;padding:16px;color:var(--text-muted);font-size:0.85rem">No upcoming events</div>';return;}
+  const typeIcon={event:'📅',period:'🌸',medicine:'💊'};
+  list.innerHTML=upcoming.map((e,i)=>`
+    <div class="saved-item">
+      <div class="saved-item-left">
+        <div class="saved-item-title">${typeIcon[e.type]||'📅'} ${e.title}</div>
+        <div class="saved-item-sub">${new Date(e.date+'T12:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}${e.note?' · '+e.note:''}</div>
+      </div>
+      <button class="del-btn" onclick="delEvent(${store.events.indexOf(e)})">🗑</button>
+    </div>`).join('');
+}
+function delEvent(i){store.events.splice(i,1);save('events');renderCalendar();}
+
+// ── SET TODAY'S DATE DEFAULTS ──
+const todayStr = new Date().toISOString().split('T')[0];
+['trip-date','expense-date','event-date'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=todayStr; });
+
+// Init
+renderCalendar();
+renderMoney();
+renderTrips();
+renderDreams();
+</script>
+</body>
+</html>
